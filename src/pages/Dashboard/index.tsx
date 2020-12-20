@@ -10,14 +10,27 @@ import {
   UserName,
   ProfileButton,
   UserAvatar,
+  ProvidersList,
 } from './styles';
 import api from '../../services/api';
 
+export interface Provider {
+  id: string;
+  name: string;
+  avatar_url: string;
+}
+
 const Dashboard: React.FC = () => {
-  const { signOut } = useAuth();
+  const [providers, setProviders] = useState<Provider[]>([]);
 
   const { signOut, user } = useAuth();
   const { navigate } = useNavigation();
+
+  useEffect(() => {
+    api.get('/providers').then(response => {
+      setProviders(response.data);
+    });
+  }, []);
 
   const navigateToProfile = useCallback(() => {
     navigate('Profile');
@@ -39,6 +52,13 @@ const Dashboard: React.FC = () => {
             <UserAvatar source={{ uri: user.avatar_url }} />
           </ProfileButton>
         </Header>
+
+        <ProvidersList
+          data={providers}
+          keyExtractor={provider => provider.id}
+          renderItem={({ item }) => <HeaderTitle>{item.name}</HeaderTitle>}
+        />
+
         <Button title="Sair" onPress={signOut} />
       </Container>
     </>

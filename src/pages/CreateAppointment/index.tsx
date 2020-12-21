@@ -1,18 +1,28 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import { useAuth } from '../../hooks/auth';
-
+import api from '../../services/api';
 import {
   Container,
   Header,
   BackButton,
   HeaderTitle,
   UserAvatar,
+  ProvidersList,
+  ProviderContainer,
+  ProviderAvatar,
+  ProviderName,
 } from './styles';
 
 interface RouteParams {
   providerId: string;
+}
+
+export interface Provider {
+  id: string;
+  name: string;
+  avatar_url: string;
 }
 
 const CreateAppointment: React.FC = () => {
@@ -20,7 +30,22 @@ const CreateAppointment: React.FC = () => {
   const route = useRoute();
   const { goBack } = useNavigation();
 
-  const { providerId } = route.params as RouteParams;
+  const routeParams = route.params as RouteParams;
+
+  const [providers, setProviders] = useState<Provider[]>([]);
+  const [selectedProviderId, setSelectedProviderId] = useState(
+    routeParams.providerId,
+  );
+
+  useEffect(() => {
+    api.get('/providers').then(response => {
+      setProviders(response.data);
+    });
+  }, []);
+
+  const handleSelectProvider = useCallback((providerId: string) => {
+    setSelectedProviderId(providerId);
+  }, []);
 
   const navigateBack = useCallback(() => {
     goBack();
@@ -37,6 +62,26 @@ const CreateAppointment: React.FC = () => {
 
         <UserAvatar source={{ uri: user.avatar_url }} />
       </Header>
+
+      <ProvidersList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={providers}
+        keyExtractor={provider => provider.id}
+        renderItem={({ item: provider }) => (
+          <ProviderContainer
+            onPress={() => {
+              handleSelectProvider(provider.id);
+            }}
+            selected={provider.id === selectedProviderId}
+          >
+            <ProviderAvatar source={{ uri: provider.avatar_url }} />
+            <ProviderName selected={provider.id === selectedProviderId}>
+              {provider.name}
+            </ProviderName>
+          </ProviderContainer>
+        )}
+      />
     </Container>
   );
 };

@@ -50,7 +50,7 @@ interface dayAvailabilityItem {
 const CreateAppointment: React.FC = () => {
   const route = useRoute();
   const { user } = useAuth();
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
 
   const routeParams = route.params as RouteParams;
 
@@ -140,13 +140,29 @@ const CreateAppointment: React.FC = () => {
         date,
         provider_id: selectedProviderId,
       });
+
+      const updatedDayAvailability = dayAvailability.map(availability => {
+        if (availability.hour === selectedHour) {
+          Object.assign(availability, { available: false });
+        }
+        return availability;
+      });
+      setDayAvailability(updatedDayAvailability);
+
+      navigate('AppointmentCreated', { date: date.getTime() });
     } catch (err) {
       Alert.alert(
         'Erro ao criar agendamento',
         'Ocorreu um erro na criação do agendamento, tente novamente',
       );
     }
-  }, [selectedDate, selectedHour, selectedProviderId]);
+  }, [
+    dayAvailability,
+    navigate,
+    selectedDate,
+    selectedHour,
+    selectedProviderId,
+  ]);
 
   const handleDateChange = useCallback(
     (event: unknown, date: Date | undefined) => {

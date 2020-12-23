@@ -13,7 +13,7 @@ import {
   HeaderTitle,
   UserAvatar,
   ProvidersList,
-  Content,
+  ScrollContent,
   ProviderContainer,
   ProviderAvatar,
   ProviderName,
@@ -184,7 +184,7 @@ const CreateAppointment: React.FC = () => {
         <UserAvatar source={{ uri: user.avatar_url }} />
       </Header>
 
-      <Content>
+      <ScrollContent>
         <ProvidersListContainer>
           <ProvidersList
             horizontal
@@ -270,7 +270,7 @@ const CreateAppointment: React.FC = () => {
         <CreateAppointmentButton onPress={handleCreateAppointment}>
           <CreateAppointmentButtonText>Agendar</CreateAppointmentButtonText>
         </CreateAppointmentButton>
-      </Content>
+      </ScrollContent>
     </Container>
   );
 };

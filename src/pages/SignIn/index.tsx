@@ -139,7 +139,7 @@ const SignIn: React.FC = () => {
 
             <ForgotPassword
               onPress={() => {
-                console.log('Qual a minha senha?'); // TODO
+                console.log('Qual a minha senha?'); // TODO send forgot password email
               }}
             >
               <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>

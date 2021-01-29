@@ -20,6 +20,7 @@ import api from '../../services/api';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
+import avatar from '../../assets/avatar-186.png';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 
@@ -184,8 +185,9 @@ const Profile: React.FC = () => {
               </Header>
 
               <UserAvatarButton onPress={handleUpdateAvatar}>
-                {/* TODO implement handleAvatarChange */}
-                <UserAvatar source={{ uri: user.avatar_url }} />
+                <UserAvatar
+                  source={user.avatar_url ? { uri: user.avatar_url } : avatar}
+                />
               </UserAvatarButton>
 
               <View>

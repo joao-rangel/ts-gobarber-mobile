@@ -29,6 +29,7 @@ interface SignUpFormData {
   name: string;
   email: string;
   password: string;
+  provider: boolean;
 }
 
 const SignUp: React.FC = () => {
@@ -39,6 +40,8 @@ const SignUp: React.FC = () => {
 
   const handleSignUp = useCallback(
     async (data: SignUpFormData) => {
+      Object.assign(data, { provider: false });
+
       try {
         formRef.current?.setErrors({});
 
@@ -48,6 +51,7 @@ const SignUp: React.FC = () => {
             .required('E-mail obrigatório')
             .email('Digite um e-mail válido'),
           password: Yup.string().min(6, 'Mínimo de 6 digitos'),
+          provider: Yup.boolean().required(),
         });
 
         await schema.validate(data, {

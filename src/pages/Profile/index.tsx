@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-picker/src';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
@@ -25,7 +26,7 @@ import Input from '../../components/Input';
 import {
   Container,
   ScrollContainer,
-  BackButton,
+  Header,
   Title,
   UserAvatar,
   UserAvatarButton,
@@ -40,7 +41,7 @@ interface ProfileFormData {
 }
 
 const Profile: React.FC = () => {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, signOut } = useAuth();
   const { goBack } = useNavigation();
 
   const formRef = useRef<FormHandles>(null);
@@ -173,9 +174,14 @@ const Profile: React.FC = () => {
         >
           <Container>
             <ScrollContainer>
-              <BackButton onPress={navigateBack}>
-                <Icon name="chevron-left" size={24} color="#999591" />
-              </BackButton>
+              <Header>
+                <TouchableOpacity onPress={navigateBack}>
+                  <Icon name="chevron-left" size={24} color="#999591" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={signOut}>
+                  <Icon name="power" size={24} color="#999591" />
+                </TouchableOpacity>
+              </Header>
 
               <UserAvatarButton onPress={handleUpdateAvatar}>
                 {/* TODO implement handleAvatarChange */}

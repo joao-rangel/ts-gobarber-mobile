@@ -10,8 +10,12 @@ export const Container = styled.View`
 
 export const ScrollContainer = styled.ScrollView``;
 
-export const BackButton = styled.TouchableOpacity`
+export const Header = styled.View`
   margin: 20px 0 0px;
+
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Title = styled.Text`
